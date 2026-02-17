@@ -1,0 +1,117 @@
+# ─────────────────────────────────────────────────────────────────────
+# AIOS-Law Core Configuration
+# This file is generated during installation and tracks project state
+# ─────────────────────────────────────────────────────────────────────
+
+project:
+  type: NEW_AIOS_LAW
+  installedAt: "2026-02-17T00:00:00Z"
+  version: "1.0.0"
+
+userProfile: advanced
+
+# ─── Documentation Paths ─────────────────────────────────────────────
+
+docs:
+  constitution: ".aios-law/constitution.md"
+  userGuide: ".aios-law/user-guide.md"
+  caseTemplate: "docs/cases"
+
+# ─── Always-Load Files ───────────────────────────────────────────────
+# These files are loaded into agent context on every activation
+
+alwaysLoad:
+  - path: ".aios-law/constitution.md"
+    description: "Princípios governantes do sistema"
+  - path: ".aios-law/core-config.yaml"
+    description: "Configuração do projeto"
+
+# ─── Command Prefix ──────────────────────────────────────────────────
+
+slashPrefix: "LAW"
+
+# ─── Jurisdição Padrão ───────────────────────────────────────────────
+
+jurisdiction:
+  country: "BR"
+  defaultState: null  # Definido em project-config.yaml
+  language: "pt-BR"
+  legalSystem: "civil-law"
+
+# ─── Tribunal Preferences ────────────────────────────────────────────
+
+tribunals:
+  federal:
+    - STF
+    - STJ
+    - TST
+    - TSE
+    - STM
+    - TRFs
+  estadual: []  # Definido em project-config.yaml
+  trabalhista:
+    - TST
+    - TRTs
+
+# ─── Prazos Configuration ────────────────────────────────────────────
+
+deadlines:
+  alertThresholds:
+    critical: 24    # horas antes do vencimento
+    warning: 48     # horas antes do vencimento
+    info: 120       # horas antes do vencimento (5 dias)
+  workingDays:
+    enabled: true   # CPC art. 219 — contagem em dias úteis
+    startHour: 6    # Início do expediente forense
+    endHour: 20     # Fim do expediente forense
+  holidays:
+    source: "auto"  # Busca automática do calendário forense
+    customHolidays: []
+
+# ─── Agent Activation ────────────────────────────────────────────────
+
+activation:
+  greeting: "full"  # full, minimal, silent
+  pipeline: "unified-activation-pipeline"
+  requireConstitutionRead: true
+  haltAfterGreeting: true
+
+# ─── Case Management ─────────────────────────────────────────────────
+
+caseManagement:
+  numbering:
+    format: "CASE-{YEAR}-{SEQ}"
+    example: "CASE-2026-001"
+  status:
+    - intake           # Triagem
+    - analysis         # Análise de viabilidade
+    - strategy         # Definição de estratégia
+    - active           # Em andamento
+    - drafting         # Redação de peça
+    - review           # Em revisão
+    - awaiting_filing  # Aguardando protocolo
+    - filed            # Protocolado
+    - hearing          # Em audiência
+    - appeal           # Recurso
+    - closed           # Encerrado
+    - archived         # Arquivado
+  isolation:
+    enabled: true
+    enforceOnActivation: true
+
+# ─── Logging ──────────────────────────────────────────────────────────
+
+logging:
+  debugLog: ".ai/debug-log.md"
+  level: "info"
+  sensitiveDataPolicy: "never"  # NUNCA logar dados de cliente
+  auditTrail:
+    enabled: true
+    path: ".ai/audit-trail.md"
+    events:
+      - agent_activation
+      - case_access
+      - document_generated
+      - deadline_alert
+      - delegation
+      - quality_gate_result

@@ -1,0 +1,63 @@
+workflow:
+  id: advisory-cycle
+  name: "Ciclo Consultivo"
+  version: "1.0.0"
+  orchestrator: "@case-manager"
+  description: "Fluxo para consultoria jurídica — pareceres, contratos e análises"
+
+triggers:
+  - type: case_distributed
+    description: "Caso consultivo distribuído"
+  - type: manual
+
+config:
+  timeouts:
+    pesquisa: "2h"
+    elaboracao: "4h"
+    revisao: "2h"
+    checkpoint: "24h"
+
+phases:
+  1_pesquisa:
+    agent: "@researcher"
+    description: "Pesquisa de legislação e jurisprudência relevante"
+    success: "2_elaboracao"
+
+  2_elaboracao:
+    agent: "${case.specialist}"
+    description: "Elaboração do parecer, contrato ou análise"
+    success: "3_revisao"
+
+  3_revisao:
+    agent: "@reviewer"
+    description: "Revisão de qualidade do documento"
+    routing:
+      APROVADO: "4_checkpoint"
+      AJUSTES_MENORES: "2a_correcao"
+      AJUSTES_MAIORES: "2a_correcao"
+      REPROVADO: "2_elaboracao"
+
+  2a_correcao:
+    agent: "${case.specialist}"
+    description: "Correção com base nos apontamentos"
+    success: "3_revisao"
+    maxAttempts: 3
+
+  4_checkpoint:
+    type: checkpoint
+    elicit: true
+    description: "Advogado humano aprova documento final"
+    decisions:
+      - id: APROVAR
+        next: "end_entregue"
+      - id: AJUSTAR
+        next: "2a_correcao"
+
+  end_entregue:
+    type: end
+    status: delivered
+
+state:
+  persistence: ".ai/workflow-state/"
+  format: yaml
+  autoResume: true

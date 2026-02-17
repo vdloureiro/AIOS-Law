@@ -1,0 +1,134 @@
+workflow:
+  id: litigation-cycle
+  name: "Ciclo de Litígio"
+  version: "1.0.0"
+  orchestrator: "@case-manager"
+  description: "Fluxo completo de uma ação judicial — da redação ao protocolo"
+
+triggers:
+  - type: case_distributed
+    description: "Caso distribuído pelo intake-cycle"
+  - type: manual
+    description: "Iniciado manualmente para caso existente"
+
+config:
+  timeouts:
+    pesquisa: "2h"
+    redacao: "4h"
+    revisao: "2h"
+    checkpoint: "24h"
+  selfHealing:
+    enabled: true
+    maxIterations: 2
+    severity: ["CRITICAL", "HIGH"]
+
+inputs:
+  - name: case_file
+    type: object
+    required: true
+    description: "Ficha do caso com fatos, estratégia e agente responsável"
+
+phases:
+  1_pesquisa:
+    agent: "@researcher"
+    task: "pesquisa/buscar-jurisprudencia.md"
+    description: "Pesquisa de jurisprudência e legislação para fundamentar a peça"
+    outputs:
+      - pesquisa_jurisprudencial
+      - legislacao_aplicavel
+      - sumulas_relevantes
+    success: "2_redacao"
+    failure: "error_pesquisa"
+
+  2_redacao:
+    agent: "${case.specialist}"
+    task: "redacao/redigir-peticao.md"
+    description: "Redação da peça processual pelo advogado especialista"
+    inputs:
+      - case_file
+      - pesquisa_jurisprudencial
+    outputs:
+      - peca_redigida
+      - fundamentacao
+      - pedidos
+    success: "3_revisao"
+    failure: "error_redacao"
+
+  3_revisao:
+    agent: "@reviewer"
+    task: "revisao/revisar-fundamentacao.md"
+    description: "Revisão de qualidade — fundamentação, conformidade OAB, coerência"
+    inputs:
+      - peca_redigida
+    outputs:
+      - relatorio_revisao
+      - veredicto
+      - apontamentos
+    routing:
+      APROVADO: "4_checkpoint_aprovacao"
+      AJUSTES_MENORES: "3a_correcao"
+      AJUSTES_MAIORES: "3a_correcao"
+      REPROVADO: "2_redacao"
+
+  3a_correcao:
+    agent: "${case.specialist}"
+    description: "Correção da peça com base nos apontamentos do revisor"
+    inputs:
+      - peca_redigida
+      - apontamentos
+    outputs:
+      - peca_corrigida
+    success: "3_revisao"
+    maxAttempts: 3
+    onMaxAttempts: "error_qualidade"
+
+  4_checkpoint_aprovacao:
+    type: checkpoint
+    elicit: true
+    agent: "@case-manager"
+    description: "Advogado humano revisa e aprova peça final"
+    decisions:
+      - id: APROVAR
+        description: "Peça aprovada — pronta para protocolo"
+        next: "5_protocolo"
+      - id: AJUSTAR
+        description: "Peça precisa de ajustes"
+        next: "3a_correcao"
+      - id: REESCREVER
+        description: "Peça precisa ser reescrita"
+        next: "2_redacao"
+
+  5_protocolo:
+    agent: "@case-manager"
+    description: "Registrar protocolo e cadastrar próximos prazos"
+    outputs:
+      - numero_protocolo
+      - prazos_cadastrados
+    success: "end_protocolado"
+
+  end_protocolado:
+    type: end
+    description: "Peça protocolada — caso segue em acompanhamento"
+    status: filed
+
+error_handlers:
+  error_pesquisa:
+    description: "Pesquisa não retornou resultados suficientes"
+    action: "notify"
+    target: "@strategist"
+
+  error_redacao:
+    description: "Erro na redação — notificar case-manager"
+    action: "notify"
+    target: "@case-manager"
+
+  error_qualidade:
+    description: "Peça não passou na revisão após 3 tentativas"
+    action: "escalate"
+    target: "human"
+    message: "Peça requer intervenção manual do advogado"
+
+state:
+  persistence: ".ai/workflow-state/"
+  format: yaml
+  autoResume: true

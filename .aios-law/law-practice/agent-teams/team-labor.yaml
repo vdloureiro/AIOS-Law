@@ -1,0 +1,17 @@
+bundle:
+  name: "Equipe Trabalhista"
+  icon: "👷"
+  description: "Time para reclamações e defesas trabalhistas"
+
+agents:
+  - intake
+  - strategist
+  - researcher
+  - labor
+  - reviewer
+  - case-manager
+
+workflows:
+  - intake-cycle.yaml
+  - litigation-cycle.yaml
+  - appeal-cycle.yaml

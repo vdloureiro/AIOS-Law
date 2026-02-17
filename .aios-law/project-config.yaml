@@ -1,0 +1,92 @@
+# ─────────────────────────────────────────────────────────────────────
+# AIOS-Law Project Configuration (Level 2 — Per Office)
+# Override framework defaults here for your specific law office
+# ─────────────────────────────────────────────────────────────────────
+
+office:
+  name: "Escritório de Advocacia"
+  oabNumber: ""              # Número OAB do escritório
+  cnpj: ""
+  state: "SP"                # Estado de atuação principal
+  city: "São Paulo"
+  areas:
+    - civil
+    - trabalhista
+    - empresarial
+
+# ─── Jurisdição Local ────────────────────────────────────────────────
+
+jurisdiction:
+  defaultState: "SP"
+  activeTribunals:
+    estadual:
+      - "TJSP"
+    federal:
+      - "TRF3"
+    trabalhista:
+      - "TRT2"
+    # Adicione conforme sua atuação
+
+# ─── Advogados Responsáveis ──────────────────────────────────────────
+# Advogados humanos que aprovam peças finais
+
+lawyers:
+  - name: ""
+    oab: ""
+    areas: ["civil", "empresarial"]
+    email: ""
+  # Adicione mais advogados conforme necessário
+
+# ─── Active Agent Team ───────────────────────────────────────────────
+
+activeTeam: "team-full"
+
+# ─── Modelo de IA ────────────────────────────────────────────────────
+
+ai:
+  defaultModel: "claude-sonnet-4-5-20250929"
+  fallbackModel: "gpt-4o"
+  temperature: 0.2  # Baixo para precisão jurídica
+  maxTokens: 8192   # Peças jurídicas podem ser longas
+
+# ─── Custom Holidays ─────────────────────────────────────────────────
+
+deadlines:
+  customHolidays:
+    - date: "2026-01-25"
+      name: "Aniversário de São Paulo"
+      scope: "municipal"
+    # Adicione feriados locais
+
+# ─── Templates Preferences ───────────────────────────────────────────
+
+templates:
+  petitionHeader:
+    showLogo: true
+    showOAB: true
+    defaultFont: "Times New Roman"
+    fontSize: 12
+  formatting:
+    lineSpacing: 1.5
+    margins: "3cm top, 2cm others"
+    paragraphIndent: "2cm"
+
+# ─── Integrations ────────────────────────────────────────────────────
+
+integrations:
+  pje:
+    enabled: false
+    url: ""
+    certificate: ""
+  esaj:
+    enabled: false
+    url: ""
+  projudi:
+    enabled: false
+    url: ""
+  clicksign:
+    enabled: false
+    apiKey: ""
+  googleCalendar:
+    enabled: false
+    calendarId: ""

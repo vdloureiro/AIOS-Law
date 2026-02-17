@@ -1,0 +1,127 @@
+workflow:
+  id: intake-cycle
+  name: "Ciclo de Atendimento ao Cliente"
+  version: "1.0.0"
+  orchestrator: "@case-manager"
+  description: "Fluxo completo desde o primeiro contato até a distribuição para especialista"
+
+triggers:
+  - type: manual
+    description: "Iniciado pelo advogado ou recepcionista"
+  - type: new_client
+    description: "Novo cliente solicita atendimento"
+
+config:
+  timeouts:
+    triagem: "30m"
+    analise: "2h"
+    checkpoint: "24h"
+  checkpoints:
+    requireHumanDecision: true
+    timeout: "24h"
+
+inputs:
+  - name: client_info
+    type: object
+    required: false
+    description: "Informações prévias do cliente (se disponíveis)"
+
+phases:
+  1_triagem:
+    agent: "@intake"
+    task: "intake/entrevista-cliente.md"
+    description: "Entrevista inicial, coleta de fatos e documentos"
+    outputs:
+      - ficha_caso
+      - resumo_fatos
+      - documentos_coletados
+      - area_identificada
+      - urgencia
+    success: "2_analise_viabilidade"
+    failure: "error_triagem"
+
+  2_analise_viabilidade:
+    agent: "@strategist"
+    task: "analise/analise-viabilidade.md"
+    description: "Análise jurídica, viabilidade, riscos e estratégia"
+    inputs:
+      - ficha_caso
+      - resumo_fatos
+    outputs:
+      - parecer_viabilidade
+      - estrategia_recomendada
+      - riscos_identificados
+      - probabilidade_exito
+    success: "3_checkpoint_cliente"
+    failure: "error_analise"
+
+  3_checkpoint_cliente:
+    type: checkpoint
+    elicit: true
+    agent: "@case-manager"
+    description: "Apresentar análise ao advogado humano para decisão"
+    decisions:
+      - id: PROSSEGUIR
+        description: "Aceitar o caso e distribuir para especialista"
+        next: "4_distribuicao"
+      - id: AJUSTAR_ESTRATEGIA
+        description: "Solicitar ajuste na estratégia"
+        next: "2_analise_viabilidade"
+      - id: PESQUISA_ADICIONAL
+        description: "Solicitar pesquisa complementar"
+        next: "2a_pesquisa"
+      - id: ARQUIVAR
+        description: "Não aceitar o caso"
+        next: "end_arquivado"
+
+  2a_pesquisa:
+    agent: "@researcher"
+    task: "pesquisa/buscar-jurisprudencia.md"
+    description: "Pesquisa complementar solicitada"
+    outputs:
+      - pesquisa_complementar
+    success: "2_analise_viabilidade"
+
+  4_distribuicao:
+    agent: "@case-manager"
+    task: "gestao/distribuir-caso.md"
+    description: "Distribuir caso para advogado especialista correto"
+    routing:
+      civil: "@civil"
+      trabalhista: "@labor"
+      criminal: "@criminal"
+      tributario: "@tax"
+      empresarial: "@corporate"
+      administrativo: "@admin-law"
+    outputs:
+      - caso_distribuido
+      - agente_responsavel
+    success: "end_distribuido"
+
+  end_distribuido:
+    type: end
+    description: "Caso distribuído — segue para litigation-cycle ou advisory-cycle"
+    next_workflow: "${workflow_type}-cycle"
+
+  end_arquivado:
+    type: end
+    description: "Caso arquivado — sem prosseguimento"
+    status: archived
+
+error_handlers:
+  error_triagem:
+    description: "Erro na triagem — notificar case-manager"
+    action: "notify"
+    target: "@case-manager"
+
+  error_analise:
+    description: "Erro na análise — retornar para triagem"
+    action: "retry"
+    maxRetries: 2
+    fallback: "notify"
+    target: "@case-manager"
+
+state:
+  persistence: ".ai/workflow-state/"
+  format: yaml
+  autoResume: true

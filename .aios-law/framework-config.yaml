@@ -1,0 +1,213 @@
+# ─────────────────────────────────────────────────────────────────────
+# AIOS-Law Framework Configuration (Level 1 — Read-Only)
+# Override values in project-config.yaml or local-config.yaml
+# ─────────────────────────────────────────────────────────────────────
+
+metadata:
+  name: "AIOS-Law"
+  version: "1.0.0"
+  description: "AI-Orchestrated System for Legal Practice"
+  license: "MIT"
+  minNodeVersion: "18.0.0"
+
+# ─── Resource Locations ──────────────────────────────────────────────
+
+paths:
+  agents: ".aios-law/law-practice/agents"
+  agentTeams: ".aios-law/law-practice/agent-teams"
+  tasks: ".aios-law/law-practice/tasks"
+  templates: ".aios-law/law-practice/templates"
+  workflows: ".aios-law/law-practice/workflows"
+  checklists: ".aios-law/law-practice/checklists"
+  elicitation: ".aios-law/elicitation"
+  hooks: ".aios-law/hooks"
+  schemas: ".aios-law/schemas"
+  data: ".aios-law/data"
+  scripts: ".aios-law/scripts"
+  utils: ".aios-law/utils"
+  cases: "docs/cases"
+  knowledgeBase: "docs/knowledge-base"
+
+# ─── Agent Registry ──────────────────────────────────────────────────
+
+agents:
+  available:
+    - id: intake
+      name: "Dra. Helena"
+      title: "Recepcionista Jurídica"
+      icon: "📋"
+      file: "intake.md"
+
+    - id: strategist
+      name: "Dr. Marcus"
+      title: "Estrategista Jurídico"
+      icon: "🎯"
+      file: "strategist.md"
+
+    - id: researcher
+      name: "Dra. Sophia"
+      title: "Pesquisadora Jurídica"
+      icon: "🔍"
+      file: "researcher.md"
+
+    - id: civil
+      name: "Dr. Cívil"
+      title: "Advogado Civilista"
+      icon: "⚖️"
+      file: "civil.md"
+
+    - id: labor
+      name: "Dra. Clara"
+      title: "Advogada Trabalhista"
+      icon: "👷"
+      file: "labor.md"
+
+    - id: criminal
+      name: "Dr. Defensor"
+      title: "Advogado Penalista"
+      icon: "🛡️"
+      file: "criminal.md"
+
+    - id: tax
+      name: "Dr. Fiscal"
+      title: "Advogado Tributarista"
+      icon: "💰"
+      file: "tax.md"
+
+    - id: corporate
+      name: "Dra. Victoria"
+      title: "Advogada Empresarialista"
+      icon: "🏢"
+      file: "corporate.md"
+
+    - id: admin-law
+      name: "Dr. Público"
+      title: "Advogado Administrativista"
+      icon: "🏛️"
+      file: "admin-law.md"
+
+    - id: reviewer
+      name: "Dr. Revisor"
+      title: "Revisor Jurídico"
+      icon: "✅"
+      file: "reviewer.md"
+
+    - id: case-manager
+      name: "Dra. Gestora"
+      title: "Gestora Processual"
+      icon: "📊"
+      file: "case-manager.md"
+
+# ─── Tool Registry ───────────────────────────────────────────────────
+
+tools:
+  legal:
+    - id: pesquisa-jurisprudencia
+      description: "Busca jurisprudência nos tribunais superiores e TJs"
+      sources: ["STF", "STJ", "TST", "TRFs", "TJs"]
+
+    - id: consulta-legislacao
+      description: "Consulta legislação vigente"
+      sources: ["planalto.gov.br", "legisweb"]
+
+    - id: consulta-processo
+      description: "Consulta andamento processual"
+      systems: ["PJe", "e-SAJ", "PROJUDI", "e-Proc"]
+
+    - id: calculadora-prazos
+      description: "Calcula prazos processuais considerando dias úteis e feriados"
+
+    - id: calculadora-trabalhista
+      description: "Cálculos trabalhistas (verbas rescisórias, horas extras, etc.)"
+
+    - id: calculadora-juros
+      description: "Calcula juros e correção monetária"
+
+    - id: consulta-cnpj
+      description: "Consulta dados empresariais via CNPJ"
+      source: "Receita Federal"
+
+    - id: consulta-certidoes
+      description: "Consulta certidões negativas"
+      types: ["federal", "estadual", "municipal", "trabalhista"]
+
+    - id: diario-oficial
+      description: "Busca publicações no Diário Oficial"
+      sources: ["DOU", "DOE", "DOM"]
+
+  productivity:
+    - id: gerador-documentos
+      description: "Gera documentos a partir de templates"
+
+    - id: formatador-peticoes
+      description: "Formata peças conforme padrões do tribunal"
+
+    - id: analisador-contratos
+      description: "Analisa cláusulas contratuais automaticamente"
+
+# ─── Quality Gates ───────────────────────────────────────────────────
+
+qualityGates:
+  fundamentacao:
+    severity: BLOCK
+    task: "revisao/revisar-fundamentacao.md"
+    description: "Verifica se toda afirmação jurídica tem base legal"
+
+  conformidadeOAB:
+    severity: BLOCK
+    task: "revisao/revisar-conformidade-oab.md"
+    description: "Verifica conformidade com Código de Ética da OAB"
+
+  prazos:
+    severity: BLOCK
+    task: "gestao/controle-prazos.md"
+    description: "Verifica prazos processuais"
+
+  coerencia:
+    severity: WARN
+    task: "revisao/revisar-coerencia.md"
+    description: "Verifica coerência argumentativa"
+
+  formatacao:
+    severity: INFO
+    task: "revisao/revisar-formatacao.md"
+    description: "Verifica formatação conforme tribunal"
+
+# ─── IDE Sync ────────────────────────────────────────────────────────
+
+ideSync:
+  source: ".aios-law/law-practice/agents"
+  targets:
+    claude-code:
+      path: ".claude/commands/AIOS-Law/agents"
+      format: "full-markdown-yaml"
+    cursor:
+      path: ".cursor/rules/agents"
+      format: "condensed-rules"
+    codex:
+      path: ".codex/agents"
+      format: "full-markdown-yaml"
+    gemini:
+      path: ".gemini/rules/AIOS-Law/agents"
+      format: "full-markdown-yaml"
+
+  validation:
+    strict: true
+    failOnDrift: true
+    failOnOrphaned: false
+
+# ─── Performance ─────────────────────────────────────────────────────
+
+performance:
+  lazyLoading:
+    enabled: true
+    heavySections:
+      - knowledgeBase
+      - jurisprudenciaCache
+  cache:
+    legislacao:
+      ttlSeconds: 86400  # 24h — legislação muda pouco
+    jurisprudencia:
+      ttlSeconds: 3600   # 1h — jurisprudência atualiza mais
+    prazos:
+      ttlSeconds: 60     # 1min — prazos são críticos

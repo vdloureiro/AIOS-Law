@@ -1,0 +1,17 @@
+bundle:
+  name: "Equipe Empresarial"
+  icon: "🏢"
+  description: "Time para questões societárias, M&A e compliance"
+
+agents:
+  - intake
+  - strategist
+  - corporate
+  - tax
+  - reviewer
+  - case-manager
+
+workflows:
+  - intake-cycle.yaml
+  - advisory-cycle.yaml
+  - contract-review-cycle.yaml

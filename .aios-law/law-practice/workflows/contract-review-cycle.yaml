@@ -1,0 +1,62 @@
+workflow:
+  id: contract-review-cycle
+  name: "Ciclo de Revisão Contratual"
+  version: "1.0.0"
+  orchestrator: "@case-manager"
+  description: "Fluxo para análise e revisão de contratos"
+
+triggers:
+  - type: manual
+  - type: contract_received
+
+phases:
+  1_analise_inicial:
+    agent: "${case.specialist}"
+    description: "Análise inicial do contrato — identificar cláusulas problemáticas"
+    outputs:
+      - clausulas_problematicas
+      - riscos_contratuais
+      - sugestoes_alteracao
+    success: "2_pesquisa"
+
+  2_pesquisa:
+    agent: "@researcher"
+    description: "Pesquisa de jurisprudência sobre cláusulas controversas"
+    condition: "clausulas_problematicas.length > 0"
+    success: "3_parecer"
+    skip: "3_parecer"
+
+  3_parecer:
+    agent: "${case.specialist}"
+    description: "Elaborar parecer com recomendações"
+    success: "4_revisao"
+
+  4_revisao:
+    agent: "@reviewer"
+    description: "Revisar parecer e recomendações"
+    routing:
+      APROVADO: "5_checkpoint"
+      AJUSTES: "3a_correcao"
+
+  3a_correcao:
+    agent: "${case.specialist}"
+    success: "4_revisao"
+
+  5_checkpoint:
+    type: checkpoint
+    elicit: true
+    description: "Advogado humano aprova parecer contratual"
+    decisions:
+      - id: APROVAR
+        next: "end_entregue"
+      - id: AJUSTAR
+        next: "3a_correcao"
+
+  end_entregue:
+    type: end
+    status: delivered
+
+state:
+  persistence: ".ai/workflow-state/"
+  format: yaml
+  autoResume: true

@@ -1,0 +1,24 @@
+bundle:
+  name: "Escritório Completo"
+  icon: "🏛️"
+  description: "Todos os advogados e especialistas disponíveis"
+
+agents:
+  - intake
+  - strategist
+  - researcher
+  - civil
+  - labor
+  - criminal
+  - tax
+  - corporate
+  - admin-law
+  - reviewer
+  - case-manager
+
+workflows:
+  - intake-cycle.yaml
+  - litigation-cycle.yaml
+  - advisory-cycle.yaml
+  - appeal-cycle.yaml
+  - contract-review-cycle.yaml

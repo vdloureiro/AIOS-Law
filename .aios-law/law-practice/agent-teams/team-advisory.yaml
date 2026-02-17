@@ -1,0 +1,17 @@
+bundle:
+  name: "Equipe Consultiva"
+  icon: "📋"
+  description: "Time para consultoria, pareceres e contratos"
+
+agents:
+  - intake
+  - strategist
+  - researcher
+  - civil
+  - corporate
+  - tax
+  - reviewer
+
+workflows:
+  - advisory-cycle.yaml
+  - contract-review-cycle.yaml

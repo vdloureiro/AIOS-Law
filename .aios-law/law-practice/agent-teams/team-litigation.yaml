@@ -1,0 +1,17 @@
+bundle:
+  name: "Equipe Contenciosa"
+  icon: "⚖️"
+  description: "Time para litígios e ações judiciais"
+
+agents:
+  - intake
+  - strategist
+  - researcher
+  - civil
+  - reviewer
+  - case-manager
+
+workflows:
+  - intake-cycle.yaml
+  - litigation-cycle.yaml
+  - appeal-cycle.yaml

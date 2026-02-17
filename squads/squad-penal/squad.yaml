@@ -1,0 +1,41 @@
+name: "squad-penal"
+version: 1.0.0
+description: "Squad especializado em Direito Penal — defesa criminal, habeas corpus, execução penal"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - penal
+    - processual-penal
+    - execucao-penal
+    - crimes-especiais
+
+components:
+  agents:
+    - agents/criminal.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - penal
+  - criminal
+  - habeas-corpus

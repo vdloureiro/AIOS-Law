@@ -1,0 +1,17 @@
+bundle:
+  name: "Equipe Criminal"
+  icon: "🛡️"
+  description: "Time para defesa criminal e habeas corpus"
+
+agents:
+  - intake
+  - strategist
+  - researcher
+  - criminal
+  - reviewer
+  - case-manager
+
+workflows:
+  - intake-cycle.yaml
+  - litigation-cycle.yaml
+  - appeal-cycle.yaml

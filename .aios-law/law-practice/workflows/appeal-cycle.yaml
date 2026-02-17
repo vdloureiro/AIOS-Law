@@ -1,0 +1,93 @@
+workflow:
+  id: appeal-cycle
+  name: "Ciclo Recursal"
+  version: "1.0.0"
+  orchestrator: "@case-manager"
+  description: "Fluxo para interposição de recursos — da análise à protocolização"
+
+triggers:
+  - type: deadline_alert
+    description: "Prazo recursal identificado"
+  - type: manual
+
+config:
+  timeouts:
+    analise: "1h"
+    pesquisa: "2h"
+    redacao: "4h"
+    revisao: "2h"
+    checkpoint: "12h"
+  urgency: high
+
+phases:
+  1_analise_decisao:
+    agent: "@strategist"
+    description: "Análise da decisão recorrida e viabilidade recursal"
+    outputs:
+      - tipo_recurso_recomendado
+      - teses_recursais
+      - viabilidade
+    success: "1a_checkpoint"
+
+  1a_checkpoint:
+    type: checkpoint
+    elicit: true
+    description: "Advogado humano decide se recorre"
+    decisions:
+      - id: RECORRER
+        next: "2_pesquisa"
+      - id: NAO_RECORRER
+        next: "end_nao_recorrer"
+      - id: EMBARGOS_DECLARACAO
+        next: "2_pesquisa"
+
+  2_pesquisa:
+    agent: "@researcher"
+    description: "Pesquisa de jurisprudência para fundamentar o recurso"
+    success: "3_redacao"
+
+  3_redacao:
+    agent: "${case.specialist}"
+    description: "Redação do recurso"
+    success: "4_revisao"
+
+  4_revisao:
+    agent: "@reviewer"
+    description: "Revisão do recurso — admissibilidade e mérito"
+    routing:
+      APROVADO: "5_checkpoint"
+      AJUSTES: "3a_correcao"
+      REPROVADO: "3_redacao"
+
+  3a_correcao:
+    agent: "${case.specialist}"
+    success: "4_revisao"
+    maxAttempts: 2
+
+  5_checkpoint:
+    type: checkpoint
+    elicit: true
+    description: "Advogado humano aprova recurso final"
+    decisions:
+      - id: APROVAR
+        next: "6_protocolo"
+      - id: AJUSTAR
+        next: "3a_correcao"
+
+  6_protocolo:
+    agent: "@case-manager"
+    description: "Protocolar recurso e atualizar prazos"
+    success: "end_protocolado"
+
+  end_protocolado:
+    type: end
+    status: appeal_filed
+
+  end_nao_recorrer:
+    type: end
+    status: no_appeal
+
+state:
+  persistence: ".ai/workflow-state/"
+  format: yaml
+  autoResume: true
