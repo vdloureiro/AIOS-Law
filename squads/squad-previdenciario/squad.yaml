@@ -1,0 +1,42 @@
+name: "squad-previdenciario"
+version: 1.0.0
+description: "Squad especializado em Direito Previdenciário — aposentadorias, benefícios, revisões, BPC/LOAS"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - previdenciario
+    - aposentadoria
+    - beneficios-inss
+    - bpc-loas
+    - revisao-beneficio
+
+components:
+  agents:
+    - agents/previdenciario.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - previdenciario
+  - inss
+  - aposentadoria

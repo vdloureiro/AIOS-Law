@@ -1,17 +1,22 @@
 {
   "name": "aios-law",
   "version": "1.0.0",
-  "description": "AI-Orchestrated System for Legal Practice — Framework de orquestração multi-agente para advocacia",
+  "description": "AI-Orchestrated System for Legal Practice — Framework de orquestração multi-agente para advocacia brasileira",
   "main": ".aios-law/index.js",
+  "bin": {
+    "aios-law": "./bin/cli.js"
+  },
   "scripts": {
+    "init": "node bin/cli.js init",
+    "doctor": "node bin/cli.js doctor",
+    "info": "node bin/cli.js info",
+    "export": "node bin/cli.js export",
     "sync:ide": "node .aios-law/scripts/sync-ide.js",
     "sync:ide:claude": "node .aios-law/scripts/sync-ide.js --target claude-code",
     "sync:ide:cursor": "node .aios-law/scripts/sync-ide.js --target cursor",
     "sync:ide:codex": "node .aios-law/scripts/sync-ide.js --target codex",
     "validate:parity": "node .aios-law/scripts/validate-parity.js",
-    "validate:agents": "node .aios-law/scripts/validate-agents.js",
-    "doctor": "node bin/aios-law.js doctor",
-    "info": "node bin/aios-law.js info"
+    "validate:agents": "node .aios-law/scripts/validate-agents.js"
   },
   "keywords": [
     "ai",
@@ -21,11 +26,16 @@
     "multi-agent",
     "orchestration",
     "framework",
-    "brazilian-law"
+    "brazilian-law",
+    "advogado",
+    "juridico"
   ],
   "author": "AIOS-Law",
   "license": "MIT",
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "docx": "^9.0.0"
   }
 }

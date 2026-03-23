@@ -1,0 +1,41 @@
+name: "squad-consumidor"
+version: 1.0.0
+description: "Squad especializado em Direito do Consumidor — relações de consumo, vícios, práticas abusivas, superendividamento"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - consumidor
+    - relacoes-consumo
+    - praticas-abusivas
+    - superendividamento
+
+components:
+  agents:
+    - agents/consumer.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - consumidor
+  - cdc
+  - defesa-consumidor

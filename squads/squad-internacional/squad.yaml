@@ -1,0 +1,42 @@
+name: "squad-internacional"
+version: 1.0.0
+description: "Squad especializado em Direito Internacional — homologação de sentença, cooperação jurídica, imigração, arbitragem internacional"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - internacional-privado
+    - internacional-publico
+    - imigracao
+    - comercio-internacional
+    - arbitragem-internacional
+
+components:
+  agents:
+    - agents/international.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - internacional
+  - imigracao
+  - cooperacao

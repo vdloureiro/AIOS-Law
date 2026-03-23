@@ -1,0 +1,43 @@
+name: "squad-saude"
+version: 1.0.0
+description: "Squad especializado em Direito da Saúde — planos de saúde, erro médico, SUS, medicamentos, ANS"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - saude
+    - plano-saude
+    - erro-medico
+    - sus
+    - biodireito
+
+components:
+  agents:
+    - agents/health.md
+    - agents/consumer.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - saude
+  - plano-saude
+  - erro-medico

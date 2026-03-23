@@ -1,0 +1,43 @@
+name: "squad-imobiliario"
+version: 1.0.0
+description: "Squad especializado em Direito Imobiliário — compra e venda, locação, usucapião, incorporação, registros"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - imobiliario
+    - locacao
+    - usucapiao
+    - incorporacao
+    - registro-imoveis
+    - condominio
+
+components:
+  agents:
+    - agents/realestate.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - imobiliario
+  - locacao
+  - imoveis

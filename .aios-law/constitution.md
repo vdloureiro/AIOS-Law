@@ -131,24 +131,32 @@ Toda peça, parecer ou documento jurídico deve atender a padrões mínimos de q
 
 ### Quality Gates obrigatórios:
 
-| Gate | Verificação | Severidade |
-|------|-------------|------------|
-| Fundamentação | Artigos citados existem e são aplicáveis | BLOCK |
-| Conformidade OAB | Respeita Código de Ética | BLOCK |
-| Prazos | Prazos processuais verificados | BLOCK |
-| Coerência | Argumentação lógica e consistente | WARN |
-| Jurisprudência | Julgados citados são verificáveis | WARN |
-| Formatação | Segue padrões do tribunal destinatário | INFO |
-| Ortografia | Sem erros gramaticais ou ortográficos | INFO |
+| Gate | Verificação | Severidade | Agente |
+|------|-------------|------------|--------|
+| Verificação de Citações | TODAS as citações legais são válidas e existentes | BLOCK | `@verificador` |
+| Verificação de Vigência | Todos os dispositivos citados estão vigentes | BLOCK | `@verificador` |
+| Verificação de Jurisdição | Legislação estadual/municipal correta para o foro | BLOCK | `@verificador` |
+| Fundamentação | Artigos citados existem e são aplicáveis | BLOCK | `@reviewer` |
+| Conformidade OAB | Respeita Código de Ética | BLOCK | `@reviewer` |
+| Prazos | Prazos processuais verificados | BLOCK | `@case-manager` |
+| Coerência | Argumentação lógica e consistente | WARN | `@reviewer` |
+| Formatação | Segue padrões do tribunal destinatário | INFO | `@reviewer` |
 
 ### Fluxo de qualidade:
 
 ```
-Redação (@especialista) → Revisão (@reviewer) → Aprovação (Advogado Humano)
+Redação (@especialista) → Verificação (@verificador) → Revisão (@reviewer) → Aprovação (Advogado Humano)
 ```
 
+- Nenhuma peça pode passar para revisão sem ser verificada por `@verificador`
 - Nenhuma peça pode ser finalizada sem passar por `@reviewer`
 - Nenhuma peça pode ser protocolada sem aprovação do advogado humano
+
+### Regra de Verificação Estadual (NON-NEGOTIABLE):
+- Toda peça DEVE considerar a legislação do **estado e município do foro** onde o processo tramita
+- Legislação estadual de um estado NÃO pode ser citada para processo de outro estado
+- Variações estaduais (ICMS, ITCMD, custas, organização judiciária) DEVEM ser verificadas
+- `@verificador` é o agente exclusivo para esta verificação
 
 ---
 

@@ -1,0 +1,11 @@
+node_modules/
+.DS_Store
+*.docx
+.aios-law/escritorio/logo.*
+.aios-law/escritorio/papel-timbrado.*
+.ai/debug-log.md
+.ai/audit-trail.md
+.ai/workflow-state/*.yaml
+docs/cases/**/*.yaml
+docs/cases/**/*.md
+!docs/cases/.gitkeep

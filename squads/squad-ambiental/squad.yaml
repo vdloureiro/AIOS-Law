@@ -1,0 +1,43 @@
+name: "squad-ambiental"
+version: 1.0.0
+description: "Squad especializado em Direito Ambiental — licenciamento, crimes ambientais, APP, reserva legal, compliance ambiental"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - ambiental
+    - licenciamento
+    - crimes-ambientais
+    - codigo-florestal
+    - residuos-solidos
+
+components:
+  agents:
+    - agents/ambiental.md
+    - agents/criminal.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - ambiental
+  - meio-ambiente
+  - licenciamento

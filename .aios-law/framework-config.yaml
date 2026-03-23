@@ -98,6 +98,102 @@ agents:
       icon: "📊"
       file: "case-manager.md"
 
+    - id: consumer
+      name: "Dra. Consumo"
+      title: "Advogada Consumerista"
+      icon: "🛒"
+      file: "consumer.md"
+
+    - id: family
+      name: "Dra. Acolhida"
+      title: "Advogada Familiarista & Sucessória"
+      icon: "👨‍👩‍👧‍👦"
+      file: "family.md"
+
+    - id: previdenciario
+      name: "Dr. Previdência"
+      title: "Advogado Previdenciarista"
+      icon: "🏥"
+      file: "previdenciario.md"
+
+    - id: ambiental
+      name: "Dra. Sustenta"
+      title: "Advogada Ambientalista"
+      icon: "🌿"
+      file: "ambiental.md"
+
+    - id: digital
+      name: "Dr. Dados"
+      title: "Advogado de Direito Digital"
+      icon: "💻"
+      file: "digital.md"
+
+    - id: realestate
+      name: "Dr. Propriedade"
+      title: "Advogado Imobiliário"
+      icon: "🏠"
+      file: "realestate.md"
+
+    - id: electoral
+      name: "Dra. Cívica"
+      title: "Advogada Eleitoralista"
+      icon: "🗳️"
+      file: "electoral.md"
+
+    - id: banking
+      name: "Dr. Financeiro"
+      title: "Advogado Bancário & Financeiro"
+      icon: "🏦"
+      file: "banking.md"
+
+    - id: international
+      name: "Dra. Diplomata"
+      title: "Advogada Internacionalista"
+      icon: "🌐"
+      file: "international.md"
+
+    - id: health
+      name: "Dr. Vital"
+      title: "Advogado de Direito da Saúde"
+      icon: "⚕️"
+      file: "health.md"
+
+    - id: agrario
+      name: "Dr. Terra"
+      title: "Advogado Agrarista"
+      icon: "🌾"
+      file: "agrario.md"
+
+    - id: military
+      name: "Dr. Ordem"
+      title: "Advogado Militarista"
+      icon: "🎖️"
+      file: "military.md"
+
+    - id: maritime
+      name: "Dra. Navegação"
+      title: "Advogada de Direito Marítimo"
+      icon: "⚓"
+      file: "maritime.md"
+
+    - id: sports
+      name: "Dr. Arena"
+      title: "Advogado Desportivo"
+      icon: "⚽"
+      file: "sports.md"
+
+    - id: ip
+      name: "Dra. Inovação"
+      title: "Advogada de Propriedade Intelectual"
+      icon: "💡"
+      file: "ip.md"
+
+    - id: verificador
+      name: "Dr. Verificador"
+      title: "Verificador de Fundamentação"
+      icon: "🔎"
+      file: "verificador.md"
+
 # ─── Tool Registry ───────────────────────────────────────────────────
 
 tools:
@@ -171,6 +267,24 @@ qualityGates:
   formatacao:
     severity: INFO
     task: "revisao/revisar-formatacao.md"
+
+  verificacaoCitacoes:
+    severity: BLOCK
+    task: "revisao/verificar-citacoes.md"
+    agent: "@verificador"
+    description: "Verifica se TODAS as citações legais são válidas, existentes e corretas"
+
+  verificacaoVigencia:
+    severity: BLOCK
+    task: "revisao/verificar-vigencia.md"
+    agent: "@verificador"
+    description: "Verifica se todos os dispositivos citados estão vigentes e atualizados"
+
+  verificacaoJurisdicao:
+    severity: BLOCK
+    task: "revisao/verificar-jurisdicao.md"
+    agent: "@verificador"
+    description: "Verifica legislação estadual/municipal correta para o foro do processo"
     description: "Verifica formatação conforme tribunal"
 
 # ─── IDE Sync ────────────────────────────────────────────────────────

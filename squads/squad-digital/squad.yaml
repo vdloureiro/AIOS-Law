@@ -1,0 +1,45 @@
+name: "squad-digital"
+version: 1.0.0
+description: "Squad especializado em Direito Digital — LGPD, Marco Civil, crimes cibernéticos, proteção de dados, IA"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - digital
+    - lgpd
+    - marco-civil
+    - crimes-ciberneticos
+    - protecao-dados
+    - regulacao-ia
+
+components:
+  agents:
+    - agents/digital.md
+    - agents/ip.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - digital
+  - lgpd
+  - privacidade
+  - tecnologia

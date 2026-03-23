@@ -4,17 +4,36 @@ bundle:
   description: "Todos os advogados e especialistas disponíveis"
 
 agents:
+  # Core
   - intake
   - strategist
   - researcher
+  - verificador
+  - reviewer
+  - case-manager
+  # Especialistas — áreas clássicas
   - civil
   - labor
   - criminal
   - tax
   - corporate
   - admin-law
-  - reviewer
-  - case-manager
+  # Especialistas — novas áreas
+  - consumer
+  - family
+  - previdenciario
+  - ambiental
+  - digital
+  - realestate
+  - electoral
+  - banking
+  - international
+  - health
+  - agrario
+  - military
+  - maritime
+  - sports
+  - ip
 
 workflows:
   - intake-cycle.yaml

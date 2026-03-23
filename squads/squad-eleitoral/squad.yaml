@@ -1,0 +1,42 @@
+name: "squad-eleitoral"
+version: 1.0.0
+description: "Squad especializado em Direito Eleitoral — registro de candidatura, propaganda, AIJE/AIME, crimes eleitorais"
+author: "AIOS-Law"
+license: MIT
+
+aios:
+  minVersion: "1.0.0"
+  type: squad
+  domain: law
+
+jurisdiction:
+  country: "BR"
+  areas:
+    - eleitoral
+    - candidatura
+    - propaganda-eleitoral
+    - crimes-eleitorais
+    - prestacao-contas
+
+components:
+  agents:
+    - agents/electoral.md
+    - agents/researcher.md
+    - agents/reviewer.md
+  tasks:
+    - tasks/*.md
+  workflows:
+    - workflows/*.yaml
+  templates:
+    - templates/*.md
+  checklists:
+    - checklists/*.md
+
+dependencies: []
+
+keywords:
+  - aios-law
+  - squad
+  - eleitoral
+  - eleicoes
+  - tse
